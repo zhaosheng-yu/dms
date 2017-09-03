@@ -1,0 +1,90 @@
+<?php include SYSDIR_VIEW ."/common/header.html";?>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 日志管理 <span class="c-gray en">&gt;</span> 日志列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form class="text-c" method="get" action="/admin/manager/adminlog.php">
+        管理名称: <input type="text" name="menu_name" value="<?php echo $_GET['menu_name'];?>" style="width:150px" class="input-text">&nbsp;
+        操作事件: <input type="text" name="oper" value="<?php echo $_GET['oper'];?>" style="width:150px" class="input-text">&nbsp;
+        管理员: <input type="text" name="admin" value="<?php echo $_GET['admin'];?>" style="width:150px" class="input-text">&nbsp;
+		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    </form>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover">
+			<thead>
+				<tr class="text-c">
+					<th><input type="checkbox" name="" value=""></th>
+					<th>ID</th>
+					<th>菜单名称</th>
+					<th>操作事件</th>
+					<th>备注</th>
+					<th>管理员</th>
+					<th>ip</th>
+					<th>操作时间</th>
+				</tr>
+			</thead>
+			<tbody>
+            <?php foreach ($records as $key=>$record) {?>
+				<tr class="text-c">
+                    <td><input type="checkbox" value="<?php echo $record['id'];?>" class="chk_ids"></td>
+                    <td><?php echo $record['id'];?></td>
+                    <td><?php echo $record['menu'];?></td>
+                    <td><?php echo $record['oper'];?></td>
+                    <td style="max-width:300px;"><?php echo $record['remark'];?></td>
+                    <td><?php echo $record['admin'];?></td>
+                    <td><?php echo $record['ip'];?></td>
+                    <td><?php echo $record['uptime'];?></td>
+				</tr>
+            <?php }?>
+                <?php if (count($records) == 0):?>
+                <tr class="odd"><td valign="top" colspan="8" class="dataTables_empty">没有数据</td></tr>
+                <?php endif;?>
+			</tbody>
+		</table>
+<div class="dataTables_wrapper">
+<div class="dataTables_info">显示 <?php echo ($p - 1) * $GLOBALS['web']['page_size'] .' 到 '. $p * $GLOBALS['web']['page_size'];?> 条，共 <?php echo $total[0]['num'];?> 条</div>
+<div class="dataTables_paginate"><?php echo $pagestr;?></div>
+</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//删除
+function del(ids){
+    if (confirm('确定要删除吗？')) {
+        $.ajax({
+                url : '/admin/manager/menu_edit.php',
+                type : 'get',
+                data : {'ajax':'del', 'ids':ids},
+                success : function(data){
+                    var data = eval("("+data+")");
+                    if(data.code) {
+                        alert(data.msg);
+                    }
+                    else {
+                        location.reload();
+                    }
+                }
+        });
+    }
+}
+
+//批量删除
+function delAll(chk_ids) {
+    var idsarr = new Array();
+    $("."+chk_ids).each(function(){
+        if ($(this).prop('checked')) {
+            idsarr.push($(this).val());
+        }
+    });
+    var idsstr = idsarr.join(',');
+
+    if (!idsstr) {
+        alert('未选择删除项！');
+        return false;
+    }
+
+    del(idsstr);
+
+}
+</script> 
+
+<?php include SYSDIR_VIEW ."/common/footer.html";?>

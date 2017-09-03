@@ -1,0 +1,114 @@
+<?php include SYSDIR_VIEW ."/common/header.html";?>
+
+<script type="text/javascript" src="<?php echo SYSDIR_HUIADMIN;?>/lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="<?php echo SYSDIR_HUIADMIN;?>/lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="<?php echo SYSDIR_HUIADMIN;?>/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="<?php echo SYSDIR_HUIADMIN;?>/lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script src="http://malsup.github.io/jquery.form.js" type="text/javascript"></script>
+
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-edit">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员账号：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_user_name'];?>" id="admin_user_name" name="admin_user_name">
+		</div>
+	</div>
+	<div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="" id="admin_pwd" name="admin_pwd">
+            <?php if($info):?><span class="c-blue">(留空表示不更改密码)</span><?php endif;?>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">管理员组：</label>
+		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="group_id" size="1">
+                <?php foreach ($groups as $key=>$val):?>
+                <?php
+                    $sel = '';
+                    if ($info['group_id'] == $val['group_id']) $sel = 'selected="selected"';
+                    echo '<option value="'.$val['group_id'].'" '.$sel.'>'.$val['group_name'].'</option>';
+                ?>
+                <?php endforeach;?>
+			</select>
+			</span> </div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">管理员名称：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_real_name'];?>" id="admin_real_name" name="admin_real_name">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">手机：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_phone'];?>" id="admin_phone" name="admin_phone">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">QQ：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_qq'];?>" id="admin_qq" name="admin_qq">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">微信：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_weixin'];?>" id="admin_weixin" name="admin_weixin">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" style="width:200px;" value="<?php echo $info['admin_email'];?>" id="admin_email" name="admin_email">
+		</div>
+	</div>
+    <input type="hidden" name="action" value="edit" />
+    <input type="hidden" name="admin_id" value="<?php echo $info['admin_id'];?>" />
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<script type="text/javascript">
+$(function(){
+	$("#form-admin-edit").validate({
+		rules:{
+			admin_user_name:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+            $(form).ajaxSubmit({
+                type: 'post', // 提交方式 get/post
+                url: '/admin/manager/admin_edit.php', // 需要提交的 url
+                data: {
+                    //'title': 'y',
+                },
+                success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                    // 此处可对 data 作相关处理
+                    if (data == 0) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        parent.location.reload();
+                        parent.layer.close(index);
+                    }
+                    else {
+                        alert('操作失败');
+                    }
+                }
+            });
+
+		}
+	});
+});
+</script> 
+<?php include SYSDIR_VIEW ."/common/footer.html";?>
