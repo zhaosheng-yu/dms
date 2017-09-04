@@ -1,5 +1,5 @@
 #dms(data manage system)
-数据管理系统；采用mvc模型，存php原生操作无模板引擎；响应式前端框架huiadmin套用，扁平化风格，兼容移动端;
+数据管理系统；采用mvc模型，纯php原生操作无模板引擎；响应式前端框架huiadmin套用，扁平化风格，兼容移动端;
 
 #密码规则
 1.admin_info->admin_pwd 规则md5(md5($pwd))
