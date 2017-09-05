@@ -37,5 +37,5 @@ man.sql
 #demo地址：http://www.yuzhaosheng.site/
 账号：admin 密码：123456
 
-#联系作者111ssdf：yzs901224@qq.com
+#联系作者111ssdfss：yzs901224@qq.com
 
