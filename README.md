@@ -41,4 +41,3 @@ man.sql
 
 1fdsfsd
 fdsadf
-fsdafd
